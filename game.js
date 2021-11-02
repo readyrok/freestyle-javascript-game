@@ -13,11 +13,7 @@ console.log(test)
 //     document.body.style.backgroundImage = "url('background.jpg')"
 // }
 
-// play.addEventListener('click', () => addBackground())
-play.addEventListener('keyup', (event) => {
-    console.log(event.clientX)
-   
-  })
+76
 
 
 
@@ -29,14 +25,34 @@ const obstacles = document.querySelector('#obstacles')
 
 let birdLeft = 50;
 let birdBottom = 500;
+const gravity = 2;
 let form = document.querySelector("#playerName");
 
 function playGame(){
+    
     document.body.style.backgroundImage = "url('game_back.jpg')";
     bird.style.bottom = birdBottom + 'px';
     bird.style.left = birdLeft + 'px';
     generateObstacle();
+    
+    let gravityId = setInterval(gravityN,20)
 }
+
+document.body.onkeyup = function(e){
+    if(e.keyCode == 32){
+        birdBottom += 35;
+    }
+}
+
+function gravityN(){
+    
+   birdBottom -= gravity
+   bird.style.bottom = birdBottom + 'px';
+   bird.style.left = birdLeft + 'px';
+}
+
+
+
 
 form.addEventListener('submit', (event) => {
     event.preventDefault();
@@ -62,7 +78,7 @@ function generateObstacle(){
     function moveObstacle(){
         obstacleLeft -= 2;
         obstacle.style.left = obstacleLeft + 'px';
-        console.log(obstacleLeft)
+        // console.log(obstacleLeft)
         if (obstacleLeft === -50){
             clearInterval(timerId);
             obstacles.removeChild(obstacle);
@@ -70,4 +86,6 @@ function generateObstacle(){
     }
     let timerId = setInterval(moveObstacle, 20);
     setTimeout(generateObstacle, 3000);
+    
 }
+
