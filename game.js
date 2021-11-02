@@ -25,9 +25,10 @@ play.addEventListener('keyup', (event) => {
 const displayName = document.querySelector('h1');
 const bird = document.querySelector('.character');
 const gameDisplay = document.querySelector('.game');
+const obstacles = document.querySelector('#obstacles')
 
-let birdLeft = 550;
-let birdBottom = 600;
+let birdLeft = 50;
+let birdBottom = 500;
 let form = document.querySelector("#playerName");
 
 function playGame(){
@@ -48,13 +49,13 @@ form.addEventListener('submit', (event) => {
 })
 
 function generateObstacle(){
-    let obstacleLeft = 910;
-    let randomHeight = Math.random() * 90;
+    let obstacleLeft = 450;
+    let randomHeight = Math.random() * 50;
     let obstacleBottom = randomHeight;
     const obstacle = document.createElement('div');
 
     obstacle.classList.add('obstacle');
-    gameDisplay.appendChild(obstacle);
+    obstacles.appendChild(obstacle);
     obstacle.style.bottom = obstacleBottom + 'px'
     obstacle.style.left = obstacleLeft + 'px'
 
@@ -62,9 +63,9 @@ function generateObstacle(){
         obstacleLeft -= 2;
         obstacle.style.left = obstacleLeft + 'px';
         console.log(obstacleLeft)
-        if (obstacleLeft === 450){
+        if (obstacleLeft === -50){
             clearInterval(timerId);
-            gameDisplay.removeChild(obstacle);
+            obstacles.removeChild(obstacle);
         }
     }
     let timerId = setInterval(moveObstacle, 20);
