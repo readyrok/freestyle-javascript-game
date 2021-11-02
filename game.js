@@ -1,7 +1,7 @@
 initGame();
 
 function initGame() {
-    // playGame();
+    //playGame();
     // Your game can start here, but define separate functions, don't write everything in here :)
 
 }
@@ -20,20 +20,53 @@ play.addEventListener('keyup', (event) => {
   })
 
 
-function playGame(){
-    let playerName = document.querySelector('#playerName').value;
-    
-    console.log(button)
-    document.body.style.backgroundImage = '';
 
+
+const displayName = document.querySelector('h1');
+const bird = document.querySelector('.character');
+const gameDisplay = document.querySelector('.game');
+
+let birdLeft = 550;
+let birdBottom = 600;
+let form = document.querySelector("#playerName");
+
+function playGame(){
+    document.body.style.backgroundImage = "url('game_back.jpg')";
+    bird.style.bottom = birdBottom + 'px';
+    bird.style.left = birdLeft + 'px';
+    generateObstacle();
 }
 
-let form = document.querySelector("#playerName");
 form.addEventListener('submit', (event) => {
     event.preventDefault();
-    let name = event.target.input.value;
-    let displayName = document.querySelector('h1');
-    displayName.innerText = name
-    form.style.display = 'none'
+    const name = event.target.input.value;
+    playGame();
+    displayName.innerText = name;
+    form.style.display = 'none';
+    bird.style.display = 'block';
+    
 })
 
+function generateObstacle(){
+    let obstacleLeft = 910;
+    let randomHeight = Math.random() * 90;
+    let obstacleBottom = randomHeight;
+    const obstacle = document.createElement('div');
+
+    obstacle.classList.add('obstacle');
+    gameDisplay.appendChild(obstacle);
+    obstacle.style.bottom = obstacleBottom + 'px'
+    obstacle.style.left = obstacleLeft + 'px'
+
+    function moveObstacle(){
+        obstacleLeft -= 2;
+        obstacle.style.left = obstacleLeft + 'px';
+        console.log(obstacleLeft)
+        if (obstacleLeft === 450){
+            clearInterval(timerId);
+            gameDisplay.removeChild(obstacle);
+        }
+    }
+    let timerId = setInterval(moveObstacle, 20);
+    setTimeout(generateObstacle, 3000);
+}
