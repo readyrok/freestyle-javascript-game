@@ -28,7 +28,12 @@ function playGame(){
 
 }
 
-let button = document.querySelector("#submit");
-button.addEventListener('submit', (event) => {
-    console.log(event)
+let form = document.querySelector("#playerName");
+form.addEventListener('submit', (event) => {
+    event.preventDefault();
+    let name = event.target.input.value;
+    let displayName = document.querySelector('h1');
+    displayName.innerText = name
+    form.style.display = 'none'
 })
+
