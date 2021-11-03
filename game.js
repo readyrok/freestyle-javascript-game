@@ -77,12 +77,21 @@ function generateObstacle(){
     obstacle.style.left = obstacleLeft + 'px'
     
     
+        
     function moveObstacle(){
+
+        let obstacleCoords = obstacle.getBoundingClientRect()
+        let birdCoords = bird.getBoundingClientRect()
+        let increaseScore = document.querySelector(".score span")
         obstacleLeft -= 2;
         obstacle.style.left = obstacleLeft + 'px';
-        // console.log(obstacleLeft)
+        if ( obstacleCoords.x == 235 && birdCoords.y > obstacleCoords.y){
+            console.log('game over')
+        }
+       
         if (obstacleLeft === 0){
             score += 1;
+            increaseScore.innerText = score;  
             console.log(score);
         }
         if (obstacleLeft === -50){    
@@ -98,16 +107,14 @@ function generateObstacle(){
     // if (obstacleLeft > 49 && obstacleLeft < 96  && birdBottom < 450 ){
     //     console.log('game over')
     // }
-    let obstacleCoords = obstacle.getBoundingClientRect()
-    let birdCoords = bird.getBoundingClientRect()
-    let obstacleId = setInterval(gameOver,1000)
+   
+    // let obstacleId = setInterval(gameOver,1000)
     
-    function gameOver(){
+    // function gameOver(){
       
-        if ( obstacle.offsetLeft < 50 && bird.offsetTop > 300){
-            console.log('game over')
-        }
-    }
+        
+        
+    // }
     
 }
 

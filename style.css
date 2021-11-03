@@ -44,4 +44,7 @@
     height: 50px;
     bottom: 0px;
     position: absolute;
+    display: flex;
+    justify-content: space-evenly;
 }
+
