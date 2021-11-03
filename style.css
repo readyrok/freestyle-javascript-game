@@ -49,3 +49,9 @@
     justify-content: space-evenly;
 }
 
+.lose{
+    position: relative;
+    top:300px;
+    left: 150px;
+    font-size: 30px;
+}

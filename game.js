@@ -65,6 +65,7 @@ form.addEventListener('submit', (event) => {
     
 })
 
+let lost = document.querySelector('.lose')
 function generateObstacle(){
     let obstacleLeft = 450;
     let randomHeight = Math.random() * 50;
@@ -75,8 +76,7 @@ function generateObstacle(){
     obstacles.appendChild(obstacle);
     obstacle.style.bottom = obstacleBottom + 'px'
     obstacle.style.left = obstacleLeft + 'px'
-    
-    
+        
   
     function moveObstacle(){
 
@@ -94,6 +94,8 @@ function generateObstacle(){
             gravity = 0;
             obstacleLeft -= 0;
             obstacle.style.left = obstacleLeft + 'px';
+            lost.innerText ='You lost!'
+            setTimeout(endGame,3000)
            
         }
        
@@ -121,4 +123,9 @@ function generateObstacle(){
       
 }
 
+function endGame(){
+    bird.style.display = 'none';
+    obstacles.style.display = 'none';
+    lost.style.display ='none';
+}
 
