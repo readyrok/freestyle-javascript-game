@@ -26,7 +26,7 @@ const obstacles = document.querySelector('#obstacles')
 let score = 0;
 let birdLeft = 50;
 let birdBottom = 500;
-const gravity = 2;
+let gravity = 2;
 let form = document.querySelector("#playerName");
 
 function playGame(){
@@ -77,45 +77,48 @@ function generateObstacle(){
     obstacle.style.left = obstacleLeft + 'px'
     
     
-        
+  
     function moveObstacle(){
 
+      
         let obstacleCoords = obstacle.getBoundingClientRect()
         let birdCoords = bird.getBoundingClientRect()
         let increaseScore = document.querySelector(".score span")
-        obstacleLeft -= 2;
+        
         obstacle.style.left = obstacleLeft + 'px';
+        if(gravity != 0){
+            obstacleLeft -= 2;
+        }
         if ( obstacleCoords.x == 235 && birdCoords.y > obstacleCoords.y){
             console.log('game over')
+            gravity = 0;
+            obstacleLeft -= 0;
+            obstacle.style.left = obstacleLeft + 'px';
+           
         }
        
         if (obstacleLeft === 0){
             score += 1;
             increaseScore.innerText = score;  
-            console.log(score);
+            
         }
         if (obstacleLeft === -50){    
           
-            clearInterval(timerId);
+            // clearInterval(timerId);
             obstacles.removeChild(obstacle);
         }
     }
-    let timerId = setInterval(moveObstacle, 20);
-    setTimeout(generateObstacle, 3000);
+    
+            if(gravity != 0){
+                let timerId = setInterval(moveObstacle, 20);
+                setTimeout(generateObstacle, 3000);    
+            }
+            
+        
+    
+  
 
-    
-    // if (obstacleLeft > 49 && obstacleLeft < 96  && birdBottom < 450 ){
-    //     console.log('game over')
-    // }
-   
-    // let obstacleId = setInterval(gameOver,1000)
-    
-    // function gameOver(){
       
-        
-        
-    // }
-    
 }
 
 
