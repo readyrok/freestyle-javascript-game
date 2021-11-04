@@ -1,131 +1,171 @@
-initGame();
+const gameStorage = window.localStorage;
+const bird = document.querySelector('.bird');
+const gameDisplay = document.querySelector('.game-container');
+const menuDisplay = document.querySelector('.menu-container')
+const obstacles = document.querySelector('.obstacles')
+const footer = document.querySelector('.footer');
+const displayName = document.querySelector('#displayName')
+const highScores = JSON.parse(localStorage.getItem('highScores')) || [];
+const MAX_HIGH_SCORES = 10;
+const loseSplash = document.querySelector('.lose-splash')
 
-function initGame() {
-    //playGame();
-    // Your game can start here, but define separate functions, don't write everything in here :)
-
-}
-
-const play = document.querySelector('button')
-const test = play.getBoundingClientRect()
-console.log(test)
-// function addBackground(){
-//     document.body.style.backgroundImage = "url('background.jpg')"
-// }
-
-76
-
-
-
-
-const displayName = document.querySelector('h1');
-const bird = document.querySelector('.character');
-const gameDisplay = document.querySelector('.game');
-const obstacles = document.querySelector('#obstacles')
-
-let score = 0;
-let birdLeft = 50;
-let birdBottom = 500;
-let gravity = 2;
 let form = document.querySelector("#playerName");
+let birdLeft = 170;
+let birdBottom = 350;
+let gravity = 2;
+let isGameOver = false;
+let gap = 430;
+let playerName = 'none';
+let score = 0;
 
-function playGame(){
     
-    document.body.style.backgroundImage = "url('game_back.jpg')";
-    bird.style.bottom = birdBottom + 'px';
-    bird.style.left = birdLeft + 'px';
-    generateObstacle();
-    
-    let gravityId = setInterval(gravityN,20)
-}
-
-document.body.onkeyup = function(e){
-    if(e.keyCode == 32){
-        birdBottom += 35;
-    }
-}
-
-function gravityN(){
-    
-   birdBottom -= gravity
-   bird.style.bottom = birdBottom + 'px';
-   bird.style.left = birdLeft + 'px';
-}
-
-
-
-
 form.addEventListener('submit', (event) => {
     event.preventDefault();
     const name = event.target.input.value;
-    playGame();
+    playerName = name;
     displayName.innerText = name;
-    form.style.display = 'none';
-    bird.style.display = 'block';
-    
+    changeAssets();
+    playGame();    
 })
 
-let lost = document.querySelector('.lose')
-function generateObstacle(){
-    let obstacleLeft = 450;
-    let randomHeight = Math.random() * 50;
-    let obstacleBottom = randomHeight;
-    const obstacle = document.createElement('div');
+function changeAssets(){
+    form.style.display = 'none';
+    bird.style.backgroundImage = "url('character.png')";
+    bird.style.display = 'block';
+    footer.style.backgroundImage = "url('footer.png')";
+    footer.style.backgroundColor = "transparent";
+    footer.style.display = 'flex';
+}
 
-    obstacle.classList.add('obstacle');
-    obstacles.appendChild(obstacle);
-    obstacle.style.bottom = obstacleBottom + 'px'
-    obstacle.style.left = obstacleLeft + 'px'
-        
-  
-    function moveObstacle(){
+function playGame(){
+    gameDisplay.style.display = 'flex';
 
-      
-        let obstacleCoords = obstacle.getBoundingClientRect()
-        let birdCoords = bird.getBoundingClientRect()
-        let increaseScore = document.querySelector(".score span")
-        
-        obstacle.style.left = obstacleLeft + 'px';
-        if(gravity != 0){
-            obstacleLeft -= 2;
-        }
-        if ( obstacleCoords.x == 235 && birdCoords.y > obstacleCoords.y){
-            console.log('game over')
-            gravity = 0;
-            obstacleLeft -= 0;
-            obstacle.style.left = obstacleLeft + 'px';
-            lost.innerText ='You lost!'
-            setTimeout(endGame,3000)
-           
-        }
-       
-        if (obstacleLeft === 0){
-            score += 1;
-            increaseScore.innerText = score;  
-            
-        }
-        if (obstacleLeft === -50){    
-          
-            // clearInterval(timerId);
-            obstacles.removeChild(obstacle);
+    function changeGravity(){
+        birdBottom -= gravity;
+        bird.style.bottom = birdBottom + 'px';
+        bird.style.left = birdLeft + 'px';
+    }
+
+    let gameTimerId = setInterval(changeGravity, 20);
+
+    function control(e){
+        if (e.keyCode === 32){
+            jump();
         }
     }
-    
-            if(gravity != 0){
-                let timerId = setInterval(moveObstacle, 20);
-                setTimeout(generateObstacle, 3000);    
-            }
-            
+
+    function jump(){
+        if (birdBottom < 610) birdBottom += 30;
+        bird.style.bottom = birdBottom + 'px';
+    }
+
+    document.addEventListener('keyup', control);
+
+    function generateObstacle(){
+        let obstacleLeft = 400;
+        let obstacleBottom = Math.random() * 60;
         
+        const obstacle = document.createElement('div');
+        const topObstacle = document.createElement('div');
+
+        if (!isGameOver){
+            obstacle.style.backgroundImage = "url('sinopharm.png')";
+            topObstacle.style.backgroundImage = "url('sinopharm.png')";
+            obstacle.classList.add('obstacle');
+            topObstacle.classList.add('topObstacle');
+            obstacles.appendChild(obstacle);
+            obstacles.appendChild(topObstacle);
+            obstacle.style.left = obstacleLeft + 'px';
+            obstacle.style.bottom = obstacleBottom + 'px';
+            topObstacle.style.left = obstacleLeft + 'px';
+            topObstacle.style.bottom = obstacleBottom + gap + 'px';
+        }
+
+        if (score >= 3 && score < 6) {
+            obstacle.style.backgroundImage = "url('sputnik.png')";
+            topObstacle.style.backgroundImage = "url('sputnik.png')";
+            gameDisplay.style.backgroundImage = "url('game_back2.jpg')"
+        }else if (score >= 6 && score < 10){
+            obstacle.style.backgroundImage = "url('astrazeneca.png')";
+            topObstacle.style.backgroundImage = "url('astrazeneca.png')";
+            gameDisplay.style.backgroundImage = "url('game_back3.jpg')"
+        }else if (score >= 10 && score < 15){
+            obstacle.style.backgroundImage = "url('pfizer.png')";
+            topObstacle.style.backgroundImage = "url('pfizer.png')";
+            gameDisplay.style.backgroundImage = "url('game_back4.jpg')"
+        }else if (score >= 15){
+            obstacle.style.backgroundImage = "url('moderna.png')";
+            topObstacle.style.backgroundImage = "url('moderna.png')";
+            gameDisplay.style.backgroundImage = "url('game_back5.jpg')"
+        };
+
+        function moveObstacle(){
+            let increaseScore = document.querySelector(".score span")
+
+            obstacleLeft -= 2;
+            obstacle.style.left = obstacleLeft + 'px';
+            topObstacle.style.left = obstacleLeft + 'px';
+   
+            if (obstacleLeft === -50){
+                clearInterval(obstacleTimerId);
+                obstacles.removeChild(obstacle);
+                obstacles.removeChild(topObstacle);
+            }
+
+            if (obstacleLeft === 150){
+                score += 1;
+                increaseScore.innerText = score;  
+            }
+
+            if (obstacleLeft > 160 && obstacleLeft < 200 && (birdBottom < obstacleBottom + 295 || birdBottom > obstacleBottom + gap - 60) ||
+                birdBottom === 0){
+                getHighScores();
+                clearInterval(obstacleTimerId); 
+                gameOver();
+            }
+        }
+        let obstacleTimerId = setInterval(moveObstacle, 20);
+
+        if (!isGameOver) setTimeout(generateObstacle, 3000);
+    }
     
-  
+    generateObstacle();
+    
+    function gameOver(){
+        clearInterval(gameTimerId);
+        isGameOver = true;
+        document.removeEventListener('keyup', control);
+        loseSplash.style.display = 'block';
+        bird.style.display = 'none';
+        obstacles.style.display = 'none';
+        displayHighScores();     
+    }
 
-      
+    function getHighScores(){
+        const newScore = {
+            score: score,
+            name: playerName
+        };
+        let table = document.querySelector('tbody');
+    
+        highScores.push(newScore);
+        highScores.sort( (a, b) => b.score - a.score);
+        highScores.splice(MAX_HIGH_SCORES);
+
+        for (element of highScores){
+            let tr = document.createElement('tr');
+            let td1 = document.createElement('td');
+            let td2 = document.createElement('td');
+            td1.innerText = element['name'];
+            td2.innerText = element['score'];
+            tr.append(td1, td2);
+            table.appendChild(tr);
+        }
+        localStorage.setItem('highScores', JSON.stringify(highScores));
+    }
+
+    function displayHighScores(){
+        let scoreTable = document.querySelector(".highScores");
+        scoreTable.style.display = "flex";
+    }
 }
-
-function endGame(){
-    bird.style.display = 'none';
-    obstacles.style.display = 'none';
-    lost.style.display ='none';
-}
-
