@@ -8,6 +8,7 @@ const displayName = document.querySelector('#displayName')
 const highScores = JSON.parse(localStorage.getItem('highScores')) || [];
 const MAX_HIGH_SCORES = 10;
 const loseSplash = document.querySelector('.lose-splash')
+const displayLogo = document.querySelector('.logo')
 
 let form = document.querySelector("#playerName");
 let birdLeft = 170;
@@ -30,6 +31,7 @@ form.addEventListener('submit', (event) => {
 
 function changeAssets(){
     form.style.display = 'none';
+    displayLogo.style.display = 'none'
     bird.style.backgroundImage = "url('character.png')";
     bird.style.display = 'block';
     footer.style.backgroundImage = "url('footer.png')";
