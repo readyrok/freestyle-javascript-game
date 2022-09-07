@@ -5,3 +5,9 @@ Escape from Vaxxine is a flappy-bird type game where you play as a famous romani
 ## Installation & Usage
 
 Clone the repo and open index.html, submit your username and then use the SPACE bar to jump.
+
+## Screenshots
+
+![Main Menu](https://github.com/readyrok/freestyle-javascript-game/blob/development/vax01.png?raw=true "Main Menu")
+
+![Gameplay](https://github.com/readyrok/freestyle-javascript-game/blob/development/vax02.png?raw=true "Gameplay")
